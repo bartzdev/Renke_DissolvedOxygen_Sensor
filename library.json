@@ -1,0 +1,23 @@
+{
+  "name": "RenkeDissolvedOxygenSensor",
+  "version": "1.0.0",
+  "description": "An Arduino/ESP32 library for interfacing with the Renke Fluorescence Dissolved Oxygen Sensor.",
+  "keywords": "dissolved oxygen, sensor, water quality",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bartzdev/Renke_DissolvedOxygen_Sensor.git"
+  },
+  "authors": [
+    {
+      "name": "Rafael Bartz",
+      "email": "bartz.dev@gmail.com",
+      "url": ""
+    }
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "dependencies": [
+  ],
+  "frameworks": "*",
+  "platforms": "*"
+}
