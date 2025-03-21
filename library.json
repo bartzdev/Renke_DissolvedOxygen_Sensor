@@ -11,11 +11,11 @@
     {
       "name": "Rafael Bartz",
       "email": "bartz.dev@gmail.com",
-      "url": ""
+      "url": "https://github.com/bartzdev"
     }
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/bartzdev/Renke_DissolvedOxygen_Sensor.git",
   "dependencies": [
   ],
   "frameworks": "*",
