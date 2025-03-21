@@ -15,6 +15,4 @@ This library uses a serial interface to communicate with the sensor. Since these
 
 
 
-
-![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
-
+<img src="https://github.com/bartzdev/Renke_DissolvedOxygen_Sensor/blob/main/examples/doSensorTest/wiring.png">
