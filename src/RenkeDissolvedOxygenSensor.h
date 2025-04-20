@@ -6,6 +6,7 @@
 class RDOSensor
 {
 public:
+    RDOSensor(Stream *serialPort);
     RDOSensor(Stream *serialPort, int driverReceiverEnablePin);
     RDOSensor(Stream *serialPort, int driverEnablePin, int receiverEnablePi);
     bool readSensorData();

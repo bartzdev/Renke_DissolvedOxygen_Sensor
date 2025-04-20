@@ -2,6 +2,7 @@
 #include <SoftwareSerial.h>
 #include "RenkeDissolvedOxygenSensor.h"
 
+bool driverHasEnablePin = true;
 const byte oxygenRequestFrame[] = {0x01, 0x03, 0x00, 0x00, 0x00, 0x06, 0xc5, 0xc8};
 const byte sensorZeroCalibrationFrame[] = {0x01, 0x06, 0x10, 0x10, 0x00, 0x01, 0x4d, 0x0f};
 Stream *renkeModbusSerial;
@@ -16,21 +17,32 @@ void RDOSensor::init(Stream *serialPort, int driverEnablePin, int receiverEnable
     renkeModbusSerial = serialPort;
 }
 
+RDOSensor::RDOSensor(Stream *serialPort)
+{
+    driverHasEnablePin = false;
+    init(serialPort, 0, 0);
+}
+
 RDOSensor::RDOSensor(Stream *serialPort, int driverReceiverEnablePin)
 {
+    driverHasEnablePin = true;
     init(serialPort, driverReceiverEnablePin, driverReceiverEnablePin);
 }
 
 RDOSensor::RDOSensor(Stream *serialPort, int driverEnablePin, int receiverEnablePin)
 {
+    driverHasEnablePin = true;
     init(serialPort, driverEnablePin, receiverEnablePin);
 }
 
 bool RDOSensor::readSensorData()
 {
     // Enabling Modbus write on the RS485 module to send an oxygen request frame.
-    digitalWrite(driverEnable, HIGH);
-    digitalWrite(receiverEnable, HIGH);
+    if (driverHasEnablePin)
+    {
+        digitalWrite(driverEnable, HIGH);
+        digitalWrite(receiverEnable, HIGH);
+    }
 
     // Send request bytes
     for (int i = 0; i < sizeof(oxygenRequestFrame); i++)
@@ -39,8 +51,11 @@ bool RDOSensor::readSensorData()
     }
 
     // Enabling Modbus read on the RS485 module to get oxygen data
-    digitalWrite(driverEnable, LOW);
-    digitalWrite(receiverEnable, LOW);
+    if (driverHasEnablePin)
+    {
+        digitalWrite(driverEnable, LOW);
+        digitalWrite(receiverEnable, LOW);
+    }
 
     byte responseBytes[17];
     int responseByteCount = 0;
@@ -86,7 +101,7 @@ bool RDOSensor::readSensorData()
 
 float RDOSensor::getOxygenSaturation()
 {
-    return oxygenSaturation;
+    return oxygenSaturation * 100.0;
 }
 
 float RDOSensor::getOxygenConcentration()
@@ -102,8 +117,11 @@ float RDOSensor::getTemperature()
 bool RDOSensor::oxygenZeroCalibration()
 {
     // Enabling Modbus write on the RS485 module to send an oxygen request frame.
-    digitalWrite(driverEnable, HIGH);
-    digitalWrite(receiverEnable, HIGH);
+    if (driverHasEnablePin)
+    {
+        digitalWrite(driverEnable, HIGH);
+        digitalWrite(receiverEnable, HIGH);
+    }
 
     // Send request bytes
     for (int i = 0; i < sizeof(sensorZeroCalibrationFrame); i++)
@@ -112,8 +130,11 @@ bool RDOSensor::oxygenZeroCalibration()
     }
 
     // Enabling Modbus read on the RS485 module to get oxygen data
-    digitalWrite(driverEnable, LOW);
-    digitalWrite(receiverEnable, LOW);
+    if (driverHasEnablePin)
+    {
+        digitalWrite(driverEnable, LOW);
+        digitalWrite(receiverEnable, LOW);
+    }
 
     byte responseBytes[17];
     int responseByteCount = 0;
@@ -136,8 +157,11 @@ bool RDOSensor::atmosphericPressureCalibration(float pressure)
     byte byte2 = lowByte(iPressure);
 
     // Enabling Modbus write on the RS485 module to send an oxygen request frame.
-    digitalWrite(driverEnable, HIGH);
-    digitalWrite(receiverEnable, HIGH);
+    if (driverHasEnablePin)
+    {
+        digitalWrite(driverEnable, HIGH);
+        digitalWrite(receiverEnable, HIGH);
+    }
 
     renkeModbusSerial->write(0x01);
     renkeModbusSerial->write(0x06);
@@ -149,8 +173,11 @@ bool RDOSensor::atmosphericPressureCalibration(float pressure)
     renkeModbusSerial->write(0x5e);
 
     // Enabling Modbus read on the RS485 module to get oxygen data
-    digitalWrite(driverEnable, LOW);
-    digitalWrite(receiverEnable, LOW);
+    if (driverHasEnablePin)
+    {
+        digitalWrite(driverEnable, LOW);
+        digitalWrite(receiverEnable, LOW);
+    }
 
     byte responseBytes[17];
     int responseByteCount = 0;
