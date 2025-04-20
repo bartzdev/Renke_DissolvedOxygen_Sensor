@@ -1,6 +1,6 @@
 {
   "name": "RenkeDissolvedOxygenSensor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An Arduino/ESP32 library for interfacing with the Renke Fluorescence Dissolved Oxygen Sensor.",
   "keywords": "dissolved oxygen, sensor, water quality",
   "repository": {
